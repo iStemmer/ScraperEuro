@@ -6,7 +6,7 @@ import csv
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
-with open('all-ah.csv') as file:
+with open('links/all-ah.csv') as file:
     content = file.readlines()
 urls = content[1:]
 i = 0

@@ -4,9 +4,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 import csv
 
+# https://www.jumbo.com/dam/jumbo/sitemaps-non-aem/sitemap_product_detailpages.xml
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
-with open('links/all-dirk.csv') as file:
+with open('links/all-jumbo.csv') as file:
     content = file.readlines()
 urls = content[1:]
 i = 0
@@ -15,19 +16,21 @@ rows = []
 for url in urls:
     driver.get(url)
     attributes = []
-    image_url = driver.find_element(By.CSS_SELECTOR, '.product-details__image img').get_attribute('src')
-    attributes.append(driver.find_element(By.CSS_SELECTOR, '.product-details__info__title').text)
-    attributes.append(driver.find_element(By.CSS_SELECTOR, '.product-details__info__subtitle').text)
-    price = driver.find_element(By.CSS_SELECTOR, '.product-card__price__new').text
+    image_url = driver.find_element(By.CSS_SELECTOR, '.product-image img').get_attribute('src')
+    attributes.append(driver.find_element(By.CSS_SELECTOR, '.product-panel__info__container h1').text)
+    # unit info
+    attributes.append(driver.find_element(By.CLASS_NAME, 'jum-heading product-subtitle h6').text)
+    price = driver.find_element(By.CSS_SELECTOR, '.current-price').text
     attributes.append(price)
-    #usual_price
+    # usual_price
     attributes.append(price)
-    #discount
+    # discount
     attributes.append('null')
-    #description
-    attributes.append(driver.find_element(By.CSS_SELECTOR, '.product-details__extra__content').text)
+    # description
+    attributes.append(driver.find_element(By.CSS_SELECTOR, '.product-description span').text)
     attributes.append(url)
     attributes.append(image_url)
+    print(attributes)
     categories = driver.find_element(By.CLASS_NAME, 'bread-crumbs--list').text.splitlines()
     categories_text = []
     for category in categories:
